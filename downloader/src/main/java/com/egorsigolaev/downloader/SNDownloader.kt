@@ -14,6 +14,7 @@ class SNDownloader(val context: Context, val socialNetwork: Int) {
     fun build(): Downloader{
         when(socialNetwork){
             YOUTUBE -> return YoutubeDownloader(context)
+            INSTAGRAM -> return InstagramDownloader()
             else -> throw Exception("social network not specified")
         }
     }

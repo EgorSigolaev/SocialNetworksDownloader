@@ -2,47 +2,28 @@ package com.egorsigolaev.downloader
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import android.util.SparseArray
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
-import com.commit451.youtubeextractor.Stream
-import io.reactivex.schedulers.Schedulers
 
 class YoutubeDownloader(val context: Context) : Downloader {
 
     var ytExtractor: YouTubeExtractor? = null
-    var extractor = com.commit451.youtubeextractor.YouTubeExtractor.Builder().build()
 
     interface SNYoutubeListener {
         fun onLoadFailure(e: Exception)
         fun onVideosLoaded(videos: List<YoutubeVideo>)
-    }
-
-    fun getVideoUrl2(videoUrl: String, listener: SNYoutubeListener){
-        val uri: Uri = Uri.parse(videoUrl)
-        val videoId: String = uri.getQueryParameter("v") ?: throw java.lang.Exception("invalid video url")
-        val disposable = extractor.extract(videoId)
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                val videoUrl = it.streams.filterIsInstance<Stream.VideoStream>().max()?.url
-                val videos = mutableListOf<YoutubeVideo>()
-                for(video in it.thumbnails){
-                    val ytVideo = YoutubeVideo(video.quality, it.title, video.url)
-                    videos.add(ytVideo)
-                }
-                listener.onVideosLoaded(videos)
-            }, {
-                val message = it.message
-                val localizedMessage = it.localizedMessage
-                listener.onLoadFailure(java.lang.Exception(it))
-            })
+        fun invalidVideoUrl()
     }
 
 
     fun getVideoUrl(videoUrl: String, listener: SNYoutubeListener) {
         ytExtractor?.cancel(true)
+        if (!videoUrl.contains("://youtu.be/") && !videoUrl.contains("youtube.com/watch?v=")){
+            listener.invalidVideoUrl()
+            return
+        }
         ytExtractor = @SuppressLint("StaticFieldLeak")
         object : YouTubeExtractor(context) {
             override fun onExtractionComplete(
