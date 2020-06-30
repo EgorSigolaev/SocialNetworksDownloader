@@ -1,0 +1,3 @@
+rootProject.name='SocialNetworksDownloader'
+include ':app'
+include ':downloader'
