@@ -37,19 +37,37 @@ class MainActivity : AppCompatActivity() {
 //        })
 
 
-        /* INSTAGRAM DOWNLOADER */
-        val photoUrl = "https://www.instagram.com/p/CBxjJe2h_pr/?igshid=mqu8xjxxcn56"
+        /* INSTAGRAM PHOTO DOWNLOADER */
+//        val photoUrl = "https://www.instagram.com/p/CBxjJe2h_pr/?igshid=mqu8xjxxcn56"
+//        val downloader = SNDownloader(this, SNDownloader.INSTAGRAM).build() as InstagramDownloader
+//        downloader.getPhoto(photoUrl, object : InstagramDownloader.SNInstagramPhotoListener{
+//            override fun onLoadFailure(e: Exception) {
+//                Log.d(TAG, e.message)
+//            }
+//
+//            override fun onPhotoLoaded(photo: InstagramPhoto) {
+//                Log.d(TAG, "Url: " + photo.url)
+//            }
+//
+//            override fun invalidPhotoUrl() {
+//                Log.d(TAG, "Invalid photo url")
+//            }
+//
+//        })
+
+        /* INSTAGRAM VIDEO DOWNLOADER */
+        val videoUrl = "https://www.instagram.com/p/B_yJmO7BSfH/"
         val downloader = SNDownloader(this, SNDownloader.INSTAGRAM).build() as InstagramDownloader
-        downloader.getPhoto(photoUrl, object : InstagramDownloader.SNInstagramPhotoListener{
+        downloader.getVideo(videoUrl, object : InstagramDownloader.SNInstagramVideoListener{
             override fun onLoadFailure(e: Exception) {
                 Log.d(TAG, e.message)
             }
 
-            override fun onPhotoLoaded(photo: InstagramPhoto) {
-                Log.d(TAG, "Url: " + photo.url)
+            override fun onVideoLoaded(video: InstagramVideo) {
+                Log.d(TAG, "Url: " + video.url)
             }
 
-            override fun invalidPhotoUrl() {
+            override fun invalidVideoUrl() {
                 Log.d(TAG, "Invalid photo url")
             }
 
